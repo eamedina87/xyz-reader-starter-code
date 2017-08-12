@@ -20,8 +20,10 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
@@ -38,6 +40,9 @@ import java.util.GregorianCalendar;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
+
+//TODO Image Background loads properly
+
 public class ArticleListActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -46,9 +51,10 @@ public class ArticleListActivity extends ActionBarActivity implements
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+    //private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
     // Use default locale format
-    private SimpleDateFormat outputFormat = new SimpleDateFormat();
+    private SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy");
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
@@ -141,7 +147,7 @@ public class ArticleListActivity extends ActionBarActivity implements
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
+            View view = getLayoutInflater().inflate(R.layout.material_list_item_article, parent, false);
             final ViewHolder vh = new ViewHolder(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,6 +175,11 @@ public class ArticleListActivity extends ActionBarActivity implements
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
+            /*
+            holder.thumbnailView.setImageUrl(
+                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
+                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
 
                 holder.subtitleView.setText(Html.fromHtml(
@@ -180,14 +191,17 @@ public class ArticleListActivity extends ActionBarActivity implements
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             } else {
                 holder.subtitleView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate)
-                        + "<br/>" + " by "
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)));
-            }
-            holder.thumbnailView.setImageUrl(
-                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+                         " by " + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                        + " <br/> " +
+                        outputFormat.format(publishedDate)));
+            }*/
+            holder.subtitleView.setText("by "+mCursor.getString(ArticleLoader.Query.AUTHOR));
+            holder.dateView.setText("("+outputFormat.format(publishedDate)+")");
+            String murl = mCursor.getString(ArticleLoader.Query.THUMB_URL);
+            Glide.with(ArticleListActivity.this)
+                    .load(murl)
+                    .into(holder.thumbnailView);
+
         }
 
         @Override
@@ -197,15 +211,19 @@ public class ArticleListActivity extends ActionBarActivity implements
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public DynamicHeightNetworkImageView thumbnailView;
+        //public DynamicHeightNetworkImageView thumbnailView;
+        public ImageView thumbnailView;
         public TextView titleView;
         public TextView subtitleView;
+        public TextView dateView;
 
         public ViewHolder(View view) {
             super(view);
-            thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
+            //thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
+            thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+            dateView = (TextView) view.findViewById(R.id.article_date);
         }
     }
 }

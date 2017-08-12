@@ -1,6 +1,9 @@
 package com.example.xyzreader.remote;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.example.xyzreader.JsonUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,6 +11,7 @@ import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,14 +23,15 @@ public class RemoteEndpointUtil {
     private RemoteEndpointUtil() {
     }
 
-    public static JSONArray fetchJsonArray() {
+    public static JSONArray fetchJsonArray(Context context) {
         String itemsJson = null;
-        try {
-            itemsJson = fetchPlainText(Config.BASE_URL);
-        } catch (IOException e) {
+        //try {
+            //itemsJson = fetchPlainText(Config.BASE_URL);
+            itemsJson = fetchPlaintextFromFile(context);
+        /*} catch (IOException e) {
             Log.e(TAG, "Error fetching items JSON", e);
             return null;
-        }
+        }*/
 
         // Parse JSON
         try {
@@ -43,8 +48,17 @@ public class RemoteEndpointUtil {
         return null;
     }
 
+    static String fetchPlaintextFromFile(Context context) {
+        String jsonString = JsonUtils.readJsonFromAssets(context);
+        return jsonString;
+    }
+
     static String fetchPlainText(URL url) throws IOException {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)
