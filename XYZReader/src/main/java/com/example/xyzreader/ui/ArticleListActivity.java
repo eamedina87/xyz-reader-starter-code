@@ -175,32 +175,13 @@ public class ArticleListActivity extends ActionBarActivity implements
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
-            /*
+
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-
-                holder.subtitleView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + "<br/>" + " by "
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
-            } else {
-                holder.subtitleView.setText(Html.fromHtml(
-                         " by " + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                        + " <br/> " +
-                        outputFormat.format(publishedDate)));
-            }*/
             holder.subtitleView.setText("by "+mCursor.getString(ArticleLoader.Query.AUTHOR));
             holder.dateView.setText("("+outputFormat.format(publishedDate)+")");
-            String murl = mCursor.getString(ArticleLoader.Query.THUMB_URL);
-            Glide.with(ArticleListActivity.this)
-                    .load(murl)
-                    .into(holder.thumbnailView);
 
         }
 
@@ -211,16 +192,14 @@ public class ArticleListActivity extends ActionBarActivity implements
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        //public DynamicHeightNetworkImageView thumbnailView;
-        public ImageView thumbnailView;
+        public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
         public TextView subtitleView;
         public TextView dateView;
 
         public ViewHolder(View view) {
             super(view);
-            //thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
-            thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
+            thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
             dateView = (TextView) view.findViewById(R.id.article_date);

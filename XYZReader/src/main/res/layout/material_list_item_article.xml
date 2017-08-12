@@ -1,0 +1,95 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_image_height"
+        >
+
+        <!--suppress AndroidLintContentDescription -->
+        <com.example.xyzreader.ui.DynamicHeightNetworkImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/photo_placeholder"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/material_list_item_gradient"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <TextView
+            android:id="@+id/article_title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/contrast_text"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/list_item_text_left_padding"
+            android:paddingEnd="@dimen/list_item_text_left_padding"
+            android:paddingRight="@dimen/list_item_text_left_padding"
+            android:paddingStart="@dimen/list_item_text_left_padding"
+            tools:text="This is the title of the article"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/article_date"
+            app:layout_constraintBottom_toTopOf="@+id/article_subtitle"
+             />
+
+        <TextView
+            android:id="@+id/article_subtitle"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ltgray"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/list_item_text_left_padding"
+            android:paddingEnd="@dimen/list_item_text_left_padding"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="Author"
+            />
+
+        <TextView
+            android:id="@+id/article_date"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/contrast_text"
+            android:ellipsize="end"
+            android:paddingRight="@dimen/list_item_text_left_padding"
+            android:paddingEnd="@dimen/list_item_text_left_padding"
+            app:layout_constraintBottom_toBottomOf="@id/article_title"
+            app:layout_constraintTop_toTopOf="@id/article_title"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="(YYYY)"
+            />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
