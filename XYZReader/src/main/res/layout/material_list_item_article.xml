@@ -13,14 +13,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_image_height"
+        android:layout_height="wrap_content"
         >
 
         <!--suppress AndroidLintContentDescription -->
         <com.example.xyzreader.ui.DynamicHeightNetworkImageView
             android:id="@+id/thumbnail"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@color/photo_placeholder"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
